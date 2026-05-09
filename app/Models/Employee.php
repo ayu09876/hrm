@@ -42,7 +42,7 @@ class Employee extends Model
         });
     }
 
-    // Relationships
+    
     public function department()
     {
         return $this->belongsTo(Department::class, 'dept_id');

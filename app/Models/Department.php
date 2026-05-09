@@ -27,7 +27,7 @@ class Department extends Model
         });
     }
 
-    // Relationships
+    
     public function employees()
     {
         return $this->hasMany(Employee::class, 'dept_id');
