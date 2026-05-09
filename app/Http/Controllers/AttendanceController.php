@@ -129,6 +129,7 @@ class AttendanceController extends Controller
                 $sanitized = [
                     'nik'       => trim((string) ($row['nik']       ?? '')),
                     'full_name' => trim((string) ($row['full_name'] ?? '')),
+                    'date'      => trim((string) ($row['date']      ?? '')),
                     'time_in'   => trim((string) ($row['time_in']   ?? '')),
                     'time_out'  => trim((string) ($row['time_out']  ?? '')),
                 ];
@@ -182,8 +183,9 @@ class AttendanceController extends Controller
         return collect($rows)->map(function (array $row) use ($employees, $existingDates, &$seenInBatch) {
             $nik        = $row['nik'];
             $employeeId = $employees->get($nik);
-            $timeIn     = $this->normalizeDateTimeValue($row['time_in']);
-            $timeOut    = $this->normalizeDateTimeValue($row['time_out']);
+            $date    = $row['date'] ?? '';
+            $timeIn  = $this->normalizeDateTimeValue($row['time_in'],  $date);
+            $timeOut = $this->normalizeDateTimeValue($row['time_out'], $date);
 
             $isDuplicate = false;
 
@@ -208,6 +210,7 @@ class AttendanceController extends Controller
                 'nik'              => $nik,
                 'employee_id'      => $employeeId,
                 'full_name'        => $row['full_name'],
+                'date'             => $row['date'],
                 'time_in'          => $timeIn,
                 'time_out'         => $timeOut,
                 'time_in_display'  => $row['time_in'],
@@ -218,17 +221,21 @@ class AttendanceController extends Controller
         })->values();
     }
 
-    private function normalizeDateTimeValue(string $value): ?string
+    private function normalizeDateTimeValue(string $value, ?string $dateBase = null): ?string
     {
         $value = trim($value);
-
         if ($value === '') return null;
 
-        try {
-            if (preg_match('/^\d{1,2}:\d{2}(:\d{2})?$/', $value)) {
-                return Carbon::parse(now()->toDateString() . ' ' . $value)->format('Y-m-d H:i:s');
-            }
+        // Resolve the base date: explicit date column > today
+        $base = $dateBase && trim($dateBase) !== ''
+            ? Carbon::parse(trim($dateBase))->toDateString()
+            : now()->toDateString();
 
+        try {
+            // Pure time value — combine with base date
+            if (preg_match('/^\d{1,2}:\d{2}(:\d{2})?$/', $value)) {
+                return Carbon::parse($base . ' ' . $value)->format('Y-m-d H:i:s');
+            }
             return Carbon::parse($value)->format('Y-m-d H:i:s');
         } catch (\Throwable $e) {
             return $value;
@@ -329,7 +336,7 @@ XML; }
 
     private function templateWorksheetXml(): string
     {
-        $headers = ['NIK', 'Full Name', 'Time In', 'Time Out'];
+        $headers = ['Date', 'NIK', 'Full Name', 'Time In', 'Time Out'];
         $cells = [];
         foreach ($headers as $index => $header) {
             $cells[] = sprintf('<c r="%s1" t="s"><v>%d</v></c>', chr(65 + $index), $index);
@@ -346,7 +353,7 @@ XML, implode('', $cells));
 
     private function templateSharedStringsXml(): string
     {
-        $headers = ['NIK', 'Full Name', 'Time In', 'Time Out'];
+        $headers = ['Date', 'NIK', 'Full Name', 'Time In', 'Time Out'];
         $items = [];
         foreach ($headers as $header) {
             $items[] = sprintf('<si><t>%s</t></si>', htmlspecialchars($header, ENT_XML1 | ENT_COMPAT, 'UTF-8'));

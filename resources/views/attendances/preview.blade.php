@@ -65,6 +65,7 @@ $dupCount = collect($preview)->where('duplicate', true)->count();
             <thead>
                 <tr>
                     <th style="width:48px">#</th>
+                    <th>Date</th>
                     <th>NIK</th>
                     <th>Full Name</th>
                     <th>Time In</th>
@@ -76,6 +77,9 @@ $dupCount = collect($preview)->where('duplicate', true)->count();
                 @foreach ($preview as $i => $row)
                 <tr class="{{ $row['valid'] ? 'row-ok' : 'row-bad' }}">
                     <td class="mono" style="color:var(--t2)">{{ $i + 1 }}</td>
+                    <td class="mono" style="font-size:12px">
+                        {{ $row['date'] ?: ($row['time_in'] ? \Carbon\Carbon::parse($row['time_in'])->toDateString() : '—') }}
+                    </td>
                     <td class="mono">{{ $row['nik'] ?: '—' }}</td>
                     <td style="font-weight:{{ $row['valid'] ? '500' : '400' }}">
                         {{ $row['full_name'] ?: '—' }}

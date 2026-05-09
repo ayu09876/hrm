@@ -1,6 +1,7 @@
 (function () {
     const decoder = new TextDecoder('utf-8');
-    const expectedHeaders = ['nik', 'full name', 'time in', 'time out'];
+    const requiredHeaders = ['nik', 'full name', 'time in', 'time out'];
+    const optionalHeaders = ['date'];
     const builtInFormats = {
         14: 'm/d/yyyy',
         15: 'd-mmm-yy',
@@ -362,21 +363,33 @@
         }
 
         const headerRow = rows[0].map(normalizeHeader);
-        const columnIndexes = expectedHeaders.map(function (header) {
-            return headerRow.indexOf(header);
+
+        // Validate all required columns are present
+        const missingHeaders = requiredHeaders.filter(function (header) {
+            return headerRow.indexOf(header) === -1;
         });
 
-        if (columnIndexes.includes(-1)) {
-            throw new Error('Expected columns: NIK, Full Name, Time In, and Time Out.');
+        if (missingHeaders.length > 0) {
+            throw new Error('Expected columns: NIK, Full Name, Time In, and Time Out. Date is optional.');
         }
+
+        // Map required column indexes
+        const nikIndex      = headerRow.indexOf('nik');
+        const nameIndex     = headerRow.indexOf('full name');
+        const timeInIndex   = headerRow.indexOf('time in');
+        const timeOutIndex  = headerRow.indexOf('time out');
+
+        // Map optional Date column — -1 means not present
+        const dateIndex = headerRow.indexOf('date');
 
         const dataRows = rows.slice(1)
             .map(function (row) {
                 return {
-                    nik: String(row[columnIndexes[0]] || '').trim(),
-                    full_name: String(row[columnIndexes[1]] || '').trim(),
-                    time_in: String(row[columnIndexes[2]] || '').trim(),
-                    time_out: String(row[columnIndexes[3]] || '').trim()
+                    date:      dateIndex !== -1 ? String(row[dateIndex]  || '').trim() : '',
+                    nik:       String(row[nikIndex]     || '').trim(),
+                    full_name: String(row[nameIndex]    || '').trim(),
+                    time_in:   String(row[timeInIndex]  || '').trim(),
+                    time_out:  String(row[timeOutIndex] || '').trim()
                 };
             })
             .filter(function (row) {

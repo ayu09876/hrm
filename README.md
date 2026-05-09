@@ -1,64 +1,109 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Ayu Sihombing
+**Email:** ayuusihombing12@gmail.com
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## HRM System
 
-## About Laravel
+Project ini dibuat sebagai technical test aplikasi CRUD HR berbasis web menggunakan PHP 7.3.24, Laravel 8, dan PostgreSQL. Fitur utama mencakup CRUD Department dan Employee, import Attendance dari file Excel .xlsx dengan preview sebelum penyimpanan, serta dilengkapi validasi data, relasi tabel, filter attendance, paginasi, template import, dan seed data untuk mempermudah pengujian aplikasi.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Gambaran Singkat Project
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+HRM System ini dipakai untuk mengelola data karyawan dan absensi dalam satu alur yang rapi.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Fitur yang tersedia:
+- Kelola data department: tambah, lihat, ubah, dan hapus department.
+- Kelola data employee: tambah, lihat, ubah, dan hapus data karyawan.
+- Kelola data attendance: melihat daftar absensi, filter berdasarkan tanggal, dan import data dari file Excel.
+- Preview data attendance sebelum masuk ke database.
+- Deteksi NIK yang tidak ditemukan saat preview import.
+- Deteksi data absensi duplikat agar tidak tersimpan dua kali.
+- Download template Excel agar format import tetap konsisten.
 
-## Learning Laravel
+## Teknologi yang Dipakai
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- PHP
+- Laravel 8
+- PostgreSQL
+- Blade Template
+- Bootstrap 5
+- JavaScript vanilla untuk parsing file `.xlsx` di browser
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Modul yang Dikerjakan
 
-## Laravel Sponsors
+### 1. Department
+![Department 1](images/department_1.png?raw=true)
+![Department 2](images/department_2.png?raw=true)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### 2. Employee
+![Employee 1](images/employee_1.png?raw=true)
+![Employee 2](images/employee_2.png?raw=true)
+![Employee 3](images/employee_3.png?raw=true)
 
-### Premium Partners
+### 3. Attendance
+![Attendance 1](images/attendance_1.png?raw=true)
+![Attendance 2](images/attendance_2.png?raw=true)
+![Attendance 3](images/attendance_3.png?raw=true)
+![Attendance 4](images/attendance_4.png?raw=true)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## Cara Menjalankan Project
 
-## Contributing
+Note terlebih dahulu on How to Run:
+- use PHP 7.3.24
+- use Postgre 18
+- Laravel 8^
+- composer install
+- php artisan generate:key
+- Ganti password `DB_PASSWORD` di file .env menjadi password postgres pengguna (DB_USERNAME juga jika berbeda)
+- Lebih baik `php artisan migrate` saja daripada harus restore menggunakan [HMR.sql](HRM.sql)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1. Pastikan PHP, Composer, dan PostgreSQL sudah terpasang.
+2. Masuk ke folder project.
+3. Install dependency Composer.
+4. Siapkan file `.env`.
+5. Atur koneksi database PostgreSQL.
+6. Jalankan migration dan seeder.
+7. Jalankan server Laravel.
 
-## Code of Conduct
+Perintah yang dipakai:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+composer install
+copy .env.example .env
+php artisan key:generate
+php artisan migrate:fresh --seed
+php artisan serve
+```
 
-## Security Vulnerabilities
+Konfigurasi database yang dipakai di project ini sudah diarahkan ke PostgreSQL melalui `DB_CONNECTION=pgsql`.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Hasil Pengecekan Terhadap Requirement Soal
 
-## License
+Saya bandingkan implementasi project ini dengan isi file technical test. Hasilnya seperti berikut.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Requirement utama
+
+- PHP 7 dengan framework: terpenuhi. Project memakai Laravel 8 dan requirement di `composer.json` masih kompatibel dengan PHP 7.3 ke atas.
+- PostgreSQL: terpenuhi. Konfigurasi `.env` memakai `pgsql`.
+- CRUD Employee: terpenuhi.
+- CRUD Department: terpenuhi.
+- Attendance import dari Excel `.xlsx`: terpenuhi.
+- Preview data attendance sebelum submit: terpenuhi.
+- Read atau menampilkan daftar attendance: terpenuhi.
+
+### Kesesuaian struktur tabel
+
+Sebagian besar struktur tabel sudah sesuai dengan soal, terutama pada nama kolom utama, panjang data penting seperti `nik` dan `full_name`, penggunaan UUID sebagai primary key, serta relasi antar data.
+
+Tetapi ada catatan yang perlu ditulis jujur:
+
+- Pada dokumen soal, `dept_id` dan `employee_id` ditulis sebagai integer, sementara di implementasi ini keduanya memakai UUID.
+- Alasan penyesuaian ini karena primary key tabel induknya juga UUID, jadi secara relasi database hasilnya tetap konsisten dan lebih rapi.
+- Jadi, dari sisi fungsi aplikasi tidak ada masalah, tetapi kalau dibandingkan sangat ketat baris per baris dengan dokumen, tipe foreign key ini tidak persis sama.
+
+### Catatan submission
+
+Ada satu hal lagi yang perlu dicatat:
+
+- Soal meminta repository berisi source code dan database file.
+- Di project ini yang tersedia adalah migration dan seeder.
+- File dump database terpisah seperti `.sql`. [HMR.sql](HRM.sql)
+- Namun lebih baik gunakan migrate saja agar fresh new DB, dan cukup create DB HMR saja di postgre

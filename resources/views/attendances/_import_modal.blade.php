@@ -57,6 +57,7 @@
                             Expected Columns
                         </div>
                         <div style="font-size:12px;font-family:var(--mo);color:var(--t1);display:flex;gap:8px;flex-wrap:wrap">
+                            <span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:4px">Date</span>
                             <span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:4px">NIK</span>
                             <span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:4px">Full Name</span>
                             <span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:4px">Time In</span>
@@ -64,6 +65,7 @@
                         </div>
                         <div style="font-size:11px;color:var(--t2);margin-top:8px">
                             The file is parsed in your browser first, then only the preview rows are sent for validation and import.
+                            <strong>Date</strong> is optional — if omitted, today's date is used. Time In/Out can be times only (e.g. <code>08:00</code>) or full datetimes.
                         </div>
                     </div>
                 </div>
